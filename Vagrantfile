@@ -59,6 +59,11 @@ Vagrant.configure("2") do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
+# Enable USB Controller on VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--usb", "on"]
+    vb.customize ["modifyvm", :id, "--usbehci", "on"]
+  end
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
@@ -66,6 +71,8 @@ Vagrant.configure("2") do |config|
    config.vm.provision "shell", inline: <<-SHELL
      apt-get update
      apt-get upgrade
+     apt-get clean
      apt-get install -y kali-tools-headless kali-tools-top10 kali-tools-web
+     apt-get install -y pciutils ps-watcher kmod man-db exploitdb
    SHELL
 end
